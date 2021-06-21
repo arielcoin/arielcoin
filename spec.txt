@@ -1,0 +1,18 @@
+This is the ArielCoin(AUM) cryptocurency specificaion
+
+- ? unknown
+
+
+Proof: ProofOfStake PoS
+Max Coins: ?
+Ring Signature Size: 7 or 16
+
+
+----- Block Structure
+
+Index - block index
+Timestamp - UNIX timestamp
+data - just strings
+Hash - current block's hash
+PrevHash - last block's hash
+Validator - the node that validated the block
