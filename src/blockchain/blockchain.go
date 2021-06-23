@@ -14,24 +14,21 @@ package blockchain
 import(
 	"crypto/sha256"
 	"encoding/hex"
-	"log"
-	"fmt"
+	"bytes"
+	"encoding/gob"
 	"time"
+
+	"log"
 )
 
 const(
 	Version = "1"
 )
 
-func HandleErr(e error,fatal bool){
-	if e != nil{
-		if fatal{
-			log.Fatal(e)
-		}else{
-			fmt.Printf("[ERR]:%v",e)
-		}
-	}
-
+func Handle(e error){
+		log.Fatal(e)
+		//print(e)
+		//panic(e)
 }
 
 
@@ -66,6 +63,8 @@ func (b *Blockchain) Init(){
 		Validator:""}
 
 	b.Blocks = append(b.Blocks, genesisBlock)
+
+	Wdb(genesisBlock)
 }
 
 //Usefull Hashing function
@@ -111,4 +110,28 @@ func (b Block) Valid(oldBlock Block) bool{
 	}
 
 	return true
+}
+
+
+func (b Block) Encode() []byte{
+	var res bytes.Buffer
+	encoder := gob.NewEncoder(&res)
+
+	err := encoder.Encode(b)
+
+	Handle(err)
+
+	return res.Bytes()
+}
+
+func Decode(data []byte) *Block{
+	var block Block
+
+	decoder := gob.NewDecoder(bytes.NewReader(data))
+
+	err := decoder.Decode(&block)
+
+	Handle(err)
+
+	return &block
 }
