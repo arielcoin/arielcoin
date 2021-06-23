@@ -1,32 +1,32 @@
 package cli
 
 import (
-	"fmt"
-	"os"
 	"flag"
+	"fmt"
 	"github.com/arielcoin/arielcoin/blockchain"
 	"github.com/davecgh/go-spew/spew"
+	"os"
 )
 
-func Run(b blockchain.Blockchain){
+func Run(b blockchain.Blockchain) {
 	//subcomand definition
-	help:=flag.NewFlagSet("help",flag.ExitOnError)
-	listBlocks:=flag.NewFlagSet("listBlocks",flag.ExitOnError)
-	createBlock:=flag.NewFlagSet("createBlock",flag.ExitOnError)
-	stake:=flag.NewFlagSet("stake",flag.ExitOnError)
+	help := flag.NewFlagSet("help", flag.ExitOnError)
+	listBlocks := flag.NewFlagSet("listBlocks", flag.ExitOnError)
+	createBlock := flag.NewFlagSet("createBlock", flag.ExitOnError)
+	stake := flag.NewFlagSet("stake", flag.ExitOnError)
 
 	//args
-	data:=createBlock.String("data","default","block data")
-	blockHash:=stake.String("blockHash","","block hash")
+	data := createBlock.String("data", "default", "block data")
+	blockHash := stake.String("blockHash", "", "block hash")
 
 	if len(os.Args) < 2 {
 		fmt.Println("uknown values")
 		printHelp()
 		os.Exit(1)
-    }
+	}
 
-    switch os.Args[1] {
-    case "help":
+	switch os.Args[1] {
+	case "help":
 		help.Parse(os.Args[2:])
 		printHelp()
 	case "listBlocks":
@@ -35,21 +35,19 @@ func Run(b blockchain.Blockchain){
 		fmt.Println("Blocks...")
 	case "createBlock":
 		createBlock.Parse(os.Args[2:])
-		ccreateBlock(*data,&b)
+		ccreateBlock(*data, &b)
 	case "stake":
 		stake.Parse(os.Args[2:])
-		stakeHash(*blockHash,b)
+		stakeHash(*blockHash, b)
 	default:
-    	fmt.Println("uknown values")
-    	printHelp()
-    	return
-    }
-
-
+		fmt.Println("uknown values")
+		printHelp()
+		return
+	}
 
 }
 
-func printHelp(){
+func printHelp() {
 	fmt.Println("ArielCoin Interface")
 	fmt.Println()
 	fmt.Println("help - This message")
@@ -59,25 +57,22 @@ func printHelp(){
 	fmt.Println()
 }
 
-
-func ccreateBlock(data string,b *blockchain.Blockchain){
-	fmt.Println(data) // fix
-	fmt.Println(b.Blocks)
+func ccreateBlock(data string, b *blockchain.Blockchain) {
 
 	//get old block
-	oldBlock:=blockchain.Blockchain.Blocks[len(Blockchain.Blocks)-1]
-	block := blockchain.BlockNew(blockchain.Version,data,"",oldBlock)
-	if !block.Valid(oldBlock){
+	oldBlock := b.Blocks[len(b.Blocks)-1]
+	block := blockchain.BlockNew(blockchain.Version, data, "", oldBlock)
+
+	if !block.Valid(oldBlock) {
 		fmt.Println("Unvalid Block")
 	}
 
-	b.Blocks = append(b.Blocks,block)
+	b.Blocks = append(b.Blocks, block)
 
-	fmt.Println(b.Blocks)
 	fmt.Println("Block Created!")
 }
 
-func stakeHash(hash string,b blockchain.Blockchain){
+func stakeHash(hash string, b blockchain.Blockchain) {
 	fmt.Println(hash)
 	fmt.Println(b.Blocks)
 	fmt.Println("Staked!")
