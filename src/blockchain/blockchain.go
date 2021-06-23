@@ -26,7 +26,9 @@ const(
 )
 
 func Handle(e error){
-		log.Fatal(e)
+		if e != nil{
+			log.Fatal(e)
+		}
 		//print(e)
 		//panic(e)
 }

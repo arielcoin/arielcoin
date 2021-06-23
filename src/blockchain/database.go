@@ -25,9 +25,10 @@ func Wdb(b Block){
   	defer db.Close()
   	
   	err = db.Update(func(txn *badger.Txn) error {
-  		
+  		print("\n--adding values--\n")
   		err  = txn.Set(hash,block) // add the block to the db
   		Handle(err)
+  		print("\n--adding values--\n")
   		err  = txn.Set([]byte("ls"),hash) //now change the lh(last hash)
 
   		Handle(err)
