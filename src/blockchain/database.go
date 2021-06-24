@@ -31,6 +31,7 @@ func Wdb(b Block){
   		print("\n--adding values--\n")
   		err  = txn.Set([]byte("ls"),hash) //now change the lh(last hash)
 
+  		print(err)
   		Handle(err)
 
   		return err
